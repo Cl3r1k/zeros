@@ -5,6 +5,14 @@ it('should calculate the number of zeros 1', () => {
     assert.equal(zeros('5!'), 1);
 });
 
+it('should calculate the number of zeros 22', () => {
+    assert.equal(zeros('99!'), 22);
+});
+
+it('should calculate the number of zeros 41', () => {
+    assert.equal(zeros('170!'), 41);
+});
+
 it('should calculate the number of zeros 3', () => {
     assert.equal(zeros('9!!*10!!*7!!'), 3);
 });

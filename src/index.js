@@ -2,26 +2,21 @@ module.exports = function zeros(expression) {
 
     const factors = expression.split('*');
 
-    let result = BigInt(1);
+    let resultZerosTotal = 0;
+    let twoAmount = 0;
     factors.map(numStr => {
-        const symbs = numStr.split('!');
-        const num = parseInt(symbs[0], 10);
-        const isDoubleFact = symbs.length > 2;
+        const symbols = numStr.split('!');
+        const num = parseInt(symbols[0], 10);
+        const isDoubleFact = symbols.length > 2;
 
-        const fact = factorial(num, isDoubleFact);
-        result *= fact;
+        const resultFactZeros = zerosCountV2(num, isDoubleFact);
+        if (!isDoubleFact || (isDoubleFact && num % 2 === 0)) {
+            twoAmount = twoAmount > Math.floor(num / 2) ? twoAmount : Math.floor(num / 2);
+        }
+        resultZerosTotal += resultFactZeros;
     });
 
-    const testCase = result.toString();
-    const zerosResult = testCase.match(/[0]+$/gmi);
-
-    let zerosCount = 0;
-    if (zerosResult && zerosResult.length > 0) {
-        zerosCount = zerosResult[0].length;
-    }
-
-    return zerosCount;
-
+    return twoAmount > 0 ? resultZerosTotal : 0;
 };
 
 function factorial(num, isDoubleFact) {
@@ -40,4 +35,28 @@ function factorial(num, isDoubleFact) {
     }
 
     return factResult;
+}
+
+function zerosCountV2(num, isDoubleFact = false) {
+
+    let result = 0;
+
+    if (isDoubleFact) {
+        if (num % 2 === 0) {
+            result = Math.floor(num / 10) + Math.floor(num / 50);
+        } else {
+            for (let i = 1; i <= num; i += 2) {
+                if (i % 5 === 0) {
+                    result++;
+                }
+                if (i % 25 === 0) {
+                    result++;
+                }
+            }
+        }
+    } else {
+        result = Math.floor(num / 5) + Math.floor(num / (5 * 5)) + Math.floor(num / (5 * 5 * 5));
+    }
+
+    return result;
 }
